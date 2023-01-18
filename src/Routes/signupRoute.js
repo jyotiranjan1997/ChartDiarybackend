@@ -17,9 +17,9 @@ signupRoute.post("/signup", authMiddleware, async (req, res) => {
   try {
    const user= await User.create(data);
     await Friend.create()
-    res.send({ msg: "Successfully User Signned up" });
+    res.status(200).send({ msg: "Successfully User Signned up" });
   } catch (err) {
-    res.send({ msg: "Failed User Signned up" });
+    res.status(500).send({ msg: "Failed User Signned up" });
   }
 });
 
