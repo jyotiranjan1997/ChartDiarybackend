@@ -10,11 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
 app.use("/user", signupRoute);
 app.use("/friend", frindsRouter);
 
-const server = app.listen(5000, async () => {
+const server = app.listen(3000, async () => {
   await connect();
   console.log("listening at 50000");
 });
@@ -43,14 +42,14 @@ io.on("connection", (socket) => {
 
     if (!chat.users) return console.log("chat.user not define");
     chat.users.forEach((element) => {
-        if (element._id === newMessageRcv.sender._id) return;
-        
-         socket.in(user._id).emit("message recieved", newMessageRcv);
+      if (element._id === newMessageRcv.sender._id) return;
+
+      socket.in(user._id).emit("message recieved", newMessageRcv);
     });
   });
 
-    socket.off("setup", () => {
-      console.log("USER DISCONNECTED");
-      socket.leave(userData._id);
-    });
+  socket.off("setup", () => {
+    console.log("USER DISCONNECTED");
+    socket.leave(userData._id);
+  });
 });

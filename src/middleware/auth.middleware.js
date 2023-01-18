@@ -5,8 +5,6 @@ const jwt = require("jsonwebtoken");
 
 const privateKey = process.env.secret_key0;
 
-
-
 const authMiddleware = async (req, res, next) => {
   const { password } = req.body;
   await bcrypt.hash(password, saltRounds, function (err, hash) {
