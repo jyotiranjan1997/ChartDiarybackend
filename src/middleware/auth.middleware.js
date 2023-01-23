@@ -6,18 +6,25 @@ const jwt = require("jsonwebtoken");
 const privateKey = process.env.secret_key0;
 
 const authMiddleware = async (req, res, next) => {
-  const { password } = req.body;
-  await bcrypt.hash(password, saltRounds, function (err, hash) {
-    // Store hash in your password DB.
+  const { email, password } = req.body;
 
-    if (err) {
-      res.status(500).send({ msg: "Error to store Password" });
-    }
-    if (hash) {
-      req.body.password = hash;
-      next();
-    }
-  });
+  let user = await User.findOne({ email });
+
+  if (user) {
+    res.status(200).send({ msg: "User already Present !" });
+  } else {
+    await bcrypt.hash(password, saltRounds, function (err, hash) {
+      // Store hash in your password DB.
+
+      if (err) {
+        res.status(500).send({ msg: "Error to store Password" });
+      }
+      if (hash) {
+        req.body.password = hash;
+        next();
+      }
+    });
+  }
 };
 
 const authPasswordChecker = async (req, res, next) => {

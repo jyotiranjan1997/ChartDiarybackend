@@ -6,17 +6,17 @@ const privateKey = process.env.secret_key0;
 const {
   authMiddleware,
   authPasswordChecker,
+  friendsMiddleware,
 } = require("../middleware/auth.middleware");
 const { Friend } = require("../models/friends.model");
-
 
 // Signup //
 
 signupRoute.post("/signup", authMiddleware, async (req, res) => {
   const data = req.body;
   try {
-   const user= await User.create(data);
-    await Friend.create()
+    const user = await User.create(data);
+    await Friend.create();
     res.status(200).send({ msg: "Successfully User Signned up" });
   } catch (err) {
     res.status(500).send({ msg: "Failed User Signned up" });
@@ -54,25 +54,29 @@ signupRoute.get("/friends", async (req, res) => {
     const { name } = req.query;
     let users = await User.find({ $name: { $search: name } });
     let newUsers = users.filter((el) => {
-      return el.password = "...";
-    })
-    
-    res.status(200).send({msg:"users find Successfully",users:newUsers})
+      return (el.password = "...");
+    });
+
+    res.status(200).send({ msg: "users find Successfully", users: newUsers });
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err);
   }
 });
 
-
-// signupRoute.get("/addfriends", async (req, res) => {
-       
-//   try {
-//     const { name } = req.query;
-//     let users = await User.find({ $name: { $search: name } });
-//     res.send(users);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// });
+signupRoute.patch("/update", friendsMiddleware, async (req, res) => {
+  const { user_id, name, email, address, dateOfBirth } = req.body;
+  try {
+    let user = await User.findByIdAndUpdate({
+      _id: user_id,
+      name,
+      email,
+      address,
+      dateOfBirth,
+    });
+    res.status(200).send({ msg: "user data updated successfully !" });
+  } catch (err) {
+    res.status(500).send({ msg: "user data updated Failed" });
+  }
+});
 
 module.exports = { signupRoute };
