@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const { loginRoute } = require("./src/Routes/loginRoute");
+const { postRoute } = require("./src/Routes/postRoute");
 const { signupRoute } = require("./src/Routes/signupRoute");
 const { connect } = require("./src/db");
 const { frindsRouter } = require("./src/Routes/friends.Route");
@@ -12,6 +12,7 @@ app.use(cors());
 
 app.use("/user", signupRoute);
 app.use("/friend", frindsRouter);
+app.use("/post", postRoute);
 
 const server = app.listen(process.env.PORT || 4000, async () => {
   await connect();

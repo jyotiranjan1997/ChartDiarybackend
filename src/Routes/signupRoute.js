@@ -16,7 +16,7 @@ signupRoute.post("/signup", authMiddleware, async (req, res) => {
   const data = req.body;
   try {
     const user = await User.create(data);
-    await Friend.create();
+
     res.status(200).send({ msg: "Successfully User Signned up" });
   } catch (err) {
     res.status(500).send({ msg: "Failed User Signned up" });
@@ -66,13 +66,17 @@ signupRoute.get("/friends", async (req, res) => {
 signupRoute.patch("/update", friendsMiddleware, async (req, res) => {
   const { user_id, name, email, address, dateOfBirth } = req.body;
   try {
-    let user = await User.findByIdAndUpdate({
-      _id: user_id,
-      name,
-      email,
-      address,
-      dateOfBirth,
-    });
+    let user = await User.findByIdAndUpdate(
+      {
+        _id: user_id,
+      },
+      {
+        name,
+        email,
+        address,
+        dateOfBirth,
+      }
+    );
     res.status(200).send({ msg: "user data updated successfully !" });
   } catch (err) {
     res.status(500).send({ msg: "user data updated Failed" });

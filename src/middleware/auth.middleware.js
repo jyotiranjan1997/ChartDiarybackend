@@ -49,8 +49,9 @@ const authPasswordChecker = async (req, res, next) => {
 
 const friendsMiddleware = (req, res, next) => {
   const { auth } = req.headers;
+  const valid_auth = auth.split(" ")[1];
 
-  jwt.verify(auth, privateKey, function (err, decoded) {
+  jwt.verify(valid_auth, privateKey, function (err, decoded) {
     if (err) {
       res.status(500).send({ msg: "error to Verify User !" });
     }
