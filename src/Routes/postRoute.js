@@ -4,9 +4,9 @@ const { friendsMiddleware } = require("../middleware/auth.middleware");
 const postRoute = express.Router();
 
 postRoute.post("/addpost",friendsMiddleware, async (req, res) => {
-  const { user_id,image_url, tags, title, containt } = req.body;
+  const { user_id,image_url, tags, title, containt,likes } = req.body;
   try {
-    await Post.create({ my_id: user_id,image_url, title, containt, tags });
+    await Post.create({ my_id: user_id,image_url, title, containt, tags,likes });
     res.status(200).send({ msg: "posted Successfully ! " });
   } catch (err) {
     res.status(500).send({ msg: "failed to post !" });

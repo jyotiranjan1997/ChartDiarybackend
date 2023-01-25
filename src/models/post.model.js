@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema({
   title: { type: String, require: true },
   tags: [],
   containt: { type: String },
+  likes: { type: Number },
 });
 
 const Post = mongoose.model("post", postSchema);
