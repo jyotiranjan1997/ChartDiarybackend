@@ -16,7 +16,7 @@ postRoute.post("/addpost",friendsMiddleware, async (req, res) => {
 postRoute.get("/",friendsMiddleware, async (req, res) => {
   const { user_id } = req.body;
   try {
-    let posts = await Post.find({ my_id: user_id });
+    let posts = await Post.find();
     res.status(200).send({ msg: "posted Successfully ! ", posts });
   } catch (err) {
     res.status(500).send({ msg: "failed to post !" });
